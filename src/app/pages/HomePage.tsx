@@ -6,31 +6,55 @@ import { useEffect, useRef, useState } from "react";
 
 
 export function HomePage() {
-  const orbitRef = useRef<HTMLDivElement>(null);
-  const [orbitSize, setOrbitSize] = useState(540);
+  const orbitWrapperRef = useRef<HTMLDivElement>(null);
+  const [orbitSize, setOrbitSize] = useState(300);
 
   useEffect(() => {
     document.title = "Orbital Fitness - Launch Your Studio Into Orbit";
   }, []);
 
   useEffect(() => {
-    if (!orbitRef.current) return;
+    const el = orbitWrapperRef.current;
+    if (!el) return;
     const obs = new ResizeObserver(entries => {
       setOrbitSize(entries[0].contentRect.width);
     });
-    obs.observe(orbitRef.current);
+    obs.observe(el);
+    setOrbitSize(el.getBoundingClientRect().width);
     return () => obs.disconnect();
   }, []);
 
-  const radius = orbitSize * 0.46;
+  // The ring itself sits inside a padding so bubbles (which extend beyond the ring)
+  // are never clipped. RING_RATIO is the fraction of orbitSize used for the ring.
+  // The remaining space (1 - RING_RATIO) / 2 on each side = bubble overflow room.
+  const RING_RATIO = 0.75; // ring diameter = 75% of wrapper
+  const ringSize = orbitSize * RING_RATIO;
+  const radius = ringSize / 2;
+
+  // Bubble dimensions proportional to ring size
+  const bubbleSize = Math.max(52, ringSize * 0.21);
+  const iconSize   = Math.max(14, ringSize * 0.072);
+  const fontSize   = Math.max(7,  ringSize * 0.025);
+  const hubSize    = Math.max(100, ringSize * 0.37);
+
+  const features = [
+    { icon: CreditCard,   label: "Payment Processing", angle: 0,   color: "#9D4DFF" },
+    { icon: ShoppingCart, label: "Merchandise",         angle: 60,  color: "#6CFFF3" },
+    { icon: UserCheck,    label: "Client Check-in",     angle: 120, color: "#3C22FF" },
+    { icon: Calendar,     label: "Scheduling",          angle: 180, color: "#9D4DFF" },
+    { icon: Dumbbell,     label: "Workout Builder",     angle: 240, color: "#6CFFF3" },
+    { icon: Users,        label: "Class Planning",      angle: 300, color: "#3C22FF" },
+  ];
 
   return (
     <div className="relative">
       {/* SECTION 1 - HERO SECTION */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 px-6">
+      {/* No overflow-hidden here so orbit is never clipped */}
+      <section className="relative min-h-screen flex items-center justify-center py-20 px-6">
         <div className="relative max-w-7xl mx-auto w-full z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* LEFT SIDE - Content */}
+
+            {/* LEFT SIDE */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -48,7 +72,7 @@ export function HomePage() {
                     <p className="text-[#6CFFF3] font-semibold">All-In-One Gym Management SaaS</p>
                   </div>
                 </motion.div>
-                
+
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold uppercase mb-6 leading-tight">
                   <span className="bg-gradient-to-r from-white via-[#9D4DFF] to-[#6CFFF3] bg-clip-text text-transparent">
                     Orbital
@@ -56,11 +80,11 @@ export function HomePage() {
                   <br />
                   <span className="text-white">Fitness</span>
                 </h1>
-                
+
                 <p className="text-2xl md:text-3xl text-white/90 mb-6 leading-relaxed">
                   Launch all aspects of studio management into your orbit.
                 </p>
-                
+
                 <p className="text-xl text-white/70 mb-10 max-w-xl leading-relaxed">
                   Accelerate your workflow with the only all‑in‑one fitness studio operating system designed to propel your business into the stratosphere.
                 </p>
@@ -80,7 +104,7 @@ export function HomePage() {
                     </div>
                   </motion.button>
                 </Link>
-                
+
                 <Link to="/contact">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -103,129 +127,162 @@ export function HomePage() {
                 transition={{ delay: 0.6 }}
                 className="grid grid-cols-3 gap-6 pt-8"
               >
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                  <p className="text-3xl font-bold bg-gradient-to-r from-[#9D4DFF] to-[#6CFFF3] bg-clip-text text-transparent">1%</p>
-                  <p className="text-sm text-white/70 mt-1">Transaction Fee</p>
-                </div>
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                  <p className="text-3xl font-bold bg-gradient-to-r from-[#9D4DFF] to-[#6CFFF3] bg-clip-text text-transparent">6+</p>
-                  <p className="text-sm text-white/70 mt-1">Tools Unified</p>
-                </div>
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-                  <p className="text-3xl font-bold bg-gradient-to-r from-[#9D4DFF] to-[#6CFFF3] bg-clip-text text-transparent">∞</p>
-                  <p className="text-sm text-white/70 mt-1">Scale Potential</p>
-                </div>
+                {[
+                  { value: "1%", label: "Transaction Fee" },
+                  { value: "6+", label: "Tools Unified" },
+                  { value: "∞",  label: "Scale Potential" },
+                ].map((stat) => (
+                  <div key={stat.label} className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+                    <p className="text-3xl font-bold bg-gradient-to-r from-[#9D4DFF] to-[#6CFFF3] bg-clip-text text-transparent">{stat.value}</p>
+                    <p className="text-sm text-white/70 mt-1">{stat.label}</p>
+                  </div>
+                ))}
               </motion.div>
             </motion.div>
 
-            {/* RIGHT SIDE - Orbital Visual */}
+            {/* RIGHT SIDE — Orbit
+              ┌─────────────────────────────────┐
+              │  orbitWrapper  (aspect-ratio 1:1, w-full, max-w capped)
+              │  ┌──────────────────────────┐   │
+              │  │  spinner (absolute inset-0, measured by ResizeObserver)
+              │  │  ring sits at RING_RATIO  │   │
+              │  │  bubbles extend beyond    │   │
+              │  └──────────────────────────┘   │
+              └─────────────────────────────────┘
+              The wrapper is sized to include the bubble overflow so nothing clips.
+            */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="relative h-[500px] lg:h-[700px] flex items-center justify-center"
+              className="relative w-full mx-auto"
+              // Cap at 480px mobile / 640px lg so it never crowds the text column
+              style={{ maxWidth: "min(480px, 100%)", aspectRatio: "1 / 1" }}
             >
-              {/*
-                The orbit wrapper (ring + bubbles) all rotate together.
-                ref={orbitRef} lets us measure the actual rendered width
-                so radius stays proportional on every screen size.
-              */}
-              <motion.div
-                ref={orbitRef}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                className="absolute w-[540px] h-[540px] lg:w-[700px] lg:h-[700px]"
-              >
-                {/* Orbit Ring */}
-                <div className="absolute inset-0 rounded-full border-2 border-dashed border-[#6CFFF3]/60" />
+              {/* This div is what ResizeObserver measures — it IS the full wrapper */}
+              <div ref={orbitWrapperRef} className="absolute inset-0">
 
-                {/* Orbiting Feature Bubbles */}
-                {[
-                  { icon: CreditCard,  label: "Payment Processing", angle: 0,   color: "#9D4DFF" },
-                  { icon: ShoppingCart, label: "Merchandise",        angle: 60,  color: "#6CFFF3" },
-                  { icon: UserCheck,   label: "Client Check-in",    angle: 120, color: "#3C22FF" },
-                  { icon: Calendar,    label: "Scheduling",         angle: 180, color: "#9D4DFF" },
-                  { icon: Dumbbell,    label: "Workout Builder",    angle: 240, color: "#6CFFF3" },
-                  { icon: Users,       label: "Class Planning",     angle: 300, color: "#3C22FF" },
-                ].map((feature, index) => {
-                  // radius is now dynamic — derived from the measured container width
-                  const x = Math.cos((feature.angle * Math.PI) / 180) * radius;
-                  const y = Math.sin((feature.angle * Math.PI) / 180) * radius;
-
-                  return (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.5 + index * 0.15 }}
-                      className="absolute top-1/2 left-1/2 z-20"
-                      style={{
-                        transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                      }}
-                    >
-                      {/* Counter-rotate so the bubble stays upright */}
-                      <motion.div
-                        animate={{ rotate: -360 }}
-                        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                      >
-                        {/* Gentle float animation on top of counter-rotation */}
-                        <motion.div
-                          animate={{ y: [0, -10, 0] }}
-                          transition={{
-                            duration: 3,
-                            repeat: Infinity,
-                            delay: index * 0.3,
-                            ease: "easeInOut",
-                          }}
-                          className="relative group cursor-pointer"
-                        >
-                          <div
-                            className="absolute -inset-2 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition duration-300"
-                            style={{ backgroundColor: `${feature.color}60` }}
-                          />
-                          <div
-                            className="relative w-20 h-20 lg:w-24 lg:h-24 rounded-full backdrop-blur-xl bg-white/10 border-2 border-white/20 flex flex-col items-center justify-center p-3 shadow-lg"
-                            style={{ boxShadow: `0 0 20px ${feature.color}40` }}
-                          >
-                            <feature.icon
-                              className="w-6 h-6 lg:w-8 lg:h-8 mb-1"
-                              style={{ color: feature.color }}
-                            />
-                            <span className="text-[9px] lg:text-[10px] text-white/90 text-center leading-tight font-medium">
-                              {feature.label}
-                            </span>
-                          </div>
-                        </motion.div>
-                      </motion.div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-
-              {/* Central Hub */}
-              <div className="relative z-30">
-                <div className="absolute -inset-12 bg-gradient-to-r from-[#9D4DFF] to-[#6CFFF3] rounded-full blur-3xl opacity-40" />
+                {/* Spinner — rotates the ring + all bubbles together */}
                 <motion.div
-                  animate={{
-                    boxShadow: [
-                      "0 0 30px rgba(157, 77, 255, 0.4)",
-                      "0 0 60px rgba(108, 255, 243, 0.6)",
-                      "0 0 30px rgba(157, 77, 255, 0.4)",
-                    ],
-                  }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                  className="relative w-48 h-48 lg:w-56 lg:h-56 rounded-full backdrop-blur-xl bg-gradient-to-br from-white/20 to-white/5 border-4 border-[#9D4DFF]/50 flex items-center justify-center overflow-hidden"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 flex items-center justify-center"
                 >
-                  <div className="text-center">
-                    <h2 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-white to-[#9D4DFF] bg-clip-text text-transparent mb-1">
-                      ORBITAL
-                    </h2>
-                    <p className="text-xl lg:text-2xl font-bold text-white">FITNESS</p>
-                    <p className="text-[10px] lg:text-xs text-white/60 mt-1">All-In-One Platform</p>
+                  {/* Ring — sized to RING_RATIO so bubbles have room outside */}
+                  <div
+                    className="relative flex-shrink-0 rounded-full border-2 border-dashed border-[#6CFFF3]/60"
+                    style={{ width: ringSize, height: ringSize }}
+                  >
+                    {/* Bubbles positioned relative to ring center */}
+                    {features.map((feature, index) => {
+                      const x = Math.cos((feature.angle * Math.PI) / 180) * radius;
+                      const y = Math.sin((feature.angle * Math.PI) / 180) * radius;
+
+                      return (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.5 + index * 0.15 }}
+                          className="absolute z-20"
+                          style={{
+                            // center of ring → offset by x,y → then pull back by half bubble
+                            left: "50%",
+                            top:  "50%",
+                            transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                          }}
+                        >
+                          {/* Counter-rotate so bubble text stays upright */}
+                          <motion.div
+                            animate={{ rotate: -360 }}
+                            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                          >
+                            {/* Float */}
+                            <motion.div
+                              animate={{ y: [0, -6, 0] }}
+                              transition={{ duration: 3, repeat: Infinity, delay: index * 0.3, ease: "easeInOut" }}
+                              className="relative group cursor-pointer"
+                            >
+                              <div
+                                className="absolute -inset-2 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition duration-300"
+                                style={{ backgroundColor: `${feature.color}60` }}
+                              />
+                              <div
+                                className="relative rounded-full backdrop-blur-xl bg-white/10 border-2 border-white/20 flex flex-col items-center justify-center shadow-lg"
+                                style={{
+                                  width:     bubbleSize,
+                                  height:    bubbleSize,
+                                  boxShadow: `0 0 20px ${feature.color}40`,
+                                  padding:   Math.max(4, bubbleSize * 0.12),
+                                }}
+                              >
+                                <feature.icon
+                                  style={{
+                                    color:        feature.color,
+                                    width:        iconSize,
+                                    height:       iconSize,
+                                    marginBottom: 2,
+                                    flexShrink:   0,
+                                  }}
+                                />
+                                <span
+                                  className="text-white/90 text-center leading-tight font-medium"
+                                  style={{ fontSize }}
+                                >
+                                  {feature.label}
+                                </span>
+                              </div>
+                            </motion.div>
+                          </motion.div>
+                        </motion.div>
+                      );
+                    })}
                   </div>
                 </motion.div>
-              </div>
+
+                {/* Central Hub — sits on top, centered in wrapper */}
+                <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
+                  <div className="relative">
+                    <div className="absolute -inset-8 bg-gradient-to-r from-[#9D4DFF] to-[#6CFFF3] rounded-full blur-3xl opacity-40" />
+                    <motion.div
+                      animate={{
+                        boxShadow: [
+                          "0 0 30px rgba(157, 77, 255, 0.4)",
+                          "0 0 60px rgba(108, 255, 243, 0.6)",
+                          "0 0 30px rgba(157, 77, 255, 0.4)",
+                        ],
+                      }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                      className="relative rounded-full backdrop-blur-xl bg-gradient-to-br from-white/20 to-white/5 border-4 border-[#9D4DFF]/50 flex items-center justify-center overflow-hidden"
+                      style={{ width: hubSize, height: hubSize }}
+                    >
+                      <div className="text-center px-2">
+                        <h2
+                          className="font-bold bg-gradient-to-r from-white to-[#9D4DFF] bg-clip-text text-transparent mb-1"
+                          style={{ fontSize: Math.max(12, hubSize * 0.19) }}
+                        >
+                          ORBITAL
+                        </h2>
+                        <p
+                          className="font-bold text-white"
+                          style={{ fontSize: Math.max(11, hubSize * 0.165) }}
+                        >
+                          FITNESS
+                        </p>
+                        <p
+                          className="text-white/60 mt-1"
+                          style={{ fontSize: Math.max(7, hubSize * 0.075) }}
+                        >
+                          All-In-One Platform
+                        </p>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+
+              </div>{/* /orbitWrapperRef */}
             </motion.div>
+
           </div>
         </div>
       </section>
