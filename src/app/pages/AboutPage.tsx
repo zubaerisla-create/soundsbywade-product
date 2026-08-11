@@ -1,258 +1,159 @@
-import { useState, useEffect } from "react";
-import { motion } from "motion/react";
-import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { MotionConfig } from "motion/react";
+import { useEffect } from "react";
+import { PrimaryCta } from "../components/AquaticsMarketing";
+import { setPageMeta } from "../lib/meta";
+import andrewPhoto from "../../assets/andrew-best.png";
+import ianPhoto from "../../assets/ian-macintyre.png";
+
+const founders = [
+  {
+    name: "Ian Quinn Macintyre",
+    title: "Co-Founder & Chief Product Officer",
+    image: ianPhoto,
+    imageClassName: "scale-[0.96] object-[50%_50%]",
+    bio: [
+      "Quinn saw the operational problems directly while working in pool management: important work split across texts, spreadsheets, paper logs, repeated communication, and manual coordination.",
+      "That firsthand view is what started Orbital. It keeps the product focused on the work operators actually need to handle every day.",
+    ],
+  },
+  {
+    name: "Andrew Best",
+    title: "Co-Founder & Head of Business Development",
+    image: andrewPhoto,
+    imageClassName: "scale-[0.94] object-[50%_48%]",
+    bio: [
+      "Andrew leads the customer and business side of Orbital, working closely with management companies and pool boards to understand what would actually make their operation easier.",
+      "His focus is making sure Orbital stays simple to understand, easy to adopt, and genuinely useful for the organizations using it.",
+    ],
+  },
+];
+
+const principles = [
+  ["Solve real problems.", "If a feature does not reduce work, create clarity, or help someone make a better decision, it has to earn its place."],
+  ["Keep it simple.", "Powerful software should make an operation feel easier, not give people another system they have to manage."],
+  ["Build with the industry.", "The best version of Orbital comes from listening closely to management companies, boards, staff, and members."],
+];
 
 export function AboutPage() {
   useEffect(() => {
-    document.title = "About Us & Testimonials - Orbital Fitness";
+    setPageMeta(
+      "About | Orbital Aquatics",
+      "Meet the Orbital Aquatics founders and learn why they are building simpler software for the people who run pools.",
+    );
   }, []);
 
   return (
-    <div className="relative pb-20">
-      {/* SECTION 1 - ABOUT THE FOUNDERS */}
-      <section className="relative py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-7xl font-bold text-center mb-6 bg-gradient-to-r from-white via-[#9D4DFF] to-[#6CFFF3] bg-clip-text text-transparent">
-              Meet the Founders
-            </h1>
-            <p className="text-xl text-white/80 text-center mb-20 max-w-3xl mx-auto">
-              Orbital Fitness was born from a shared vision: to revolutionize how fitness studios operate by bringing every essential tool into one seamless ecosystem.
-            </p>
-
-            {/* Founders Grid */}
-            <div className="grid md:grid-cols-2 gap-12 mb-20">
-              {/* Founder 1 */}
-              <FounderCard
-                name="Ian Mitchell"
-                role="Co-Founder & Chief Technology Officer"
-                image="https://images.unsplash.com/photo-1530281834572-02d15fa61f64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0JTIwbWFsZXxlbnwxfHx8fDE3NzE1MDMxMzR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                bio="With over a decade of experience in software engineering and a passion for fitness, Ian recognized the fragmentation plaguing gym management systems. His expertise in building scalable platforms led to the creation of Orbital Fitness's robust, all-in-one infrastructure. When he's not coding, you'll find Ian at the gym or exploring new technologies that push the boundaries of what's possible."
-              />
-
-              {/* Founder 2 */}
-              <FounderCard
-                name="Andrew Chen"
-                role="Co-Founder & Chief Executive Officer"
-                image="https://images.unsplash.com/photo-1629507313712-f21468afdf2e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0JTIwZmVtYWxlfGVufDF8fHx8MTc3MTUzMDA2N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                bio="Andrew brings a unique blend of business acumen and hands-on fitness industry experience. As a former gym owner, they intimately understand the pain points that Orbital Fitness solves. Andrew's vision is to empower studio owners with tools that don't just manage operations—they accelerate growth. Their leadership ensures that every feature we build serves real business needs."
-              />
+    <MotionConfig reducedMotion="user">
+      <div className="relative">
+        <section className="relative overflow-hidden px-5 py-16 sm:px-6 lg:py-20">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_24%,rgba(103,232,249,0.12),transparent_34%),linear-gradient(180deg,rgba(3,16,24,0)_0%,rgba(3,16,24,0.5)_100%)]" />
+          <div className="relative mx-auto grid max-w-[1240px] gap-10 lg:grid-cols-[0.72fr_0.48fr] lg:items-end">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-100/70">WHO WE ARE</p>
+              <h1 className="mt-5 max-w-4xl text-4xl font-semibold leading-[1.02] tracking-normal text-white sm:text-6xl lg:text-7xl">
+                We’re building the product we wish the pool industry already had.
+              </h1>
             </div>
+            <div className="border-y border-white/10 py-6">
+              <p className="text-lg leading-8 text-slate-300">
+                Orbital started with a simple question: why is so much of running a pool still held together by disconnected tools and constant back-and-forth?
+              </p>
+            </div>
+          </div>
+        </section>
 
-            {/* Mission Statement */}
-            <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-[#9D4DFF]/20 to-[#6CFFF3]/20 rounded-3xl blur-3xl" />
-              <div className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-12 text-center">
-                <Quote className="w-12 h-12 text-[#6CFFF3] mx-auto mb-6" />
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Our Mission</h2>
-                <p className="text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
-                  To launch fitness studios into a new era of efficiency, profitability, and member satisfaction by providing the most comprehensive, intuitive, and innovative management platform in the industry. We believe that when studio owners have the right tools, they can focus on what truly matters: transforming lives.
+        <section className="border-y border-white/10 bg-[#020a11] px-5 py-16 sm:px-6 lg:py-24">
+          <div className="mx-auto max-w-[1240px]">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-100/70">FOUNDERS</p>
+            <div className="mt-8 grid gap-14 lg:grid-cols-2 lg:gap-16">
+              {founders.map((founder) => (
+                <article key={founder.name}>
+                  <figure className="relative flex aspect-[4/5] max-h-[560px] items-center justify-center overflow-hidden border border-white/10 bg-[radial-gradient(circle_at_50%_18%,rgba(103,232,249,0.12),transparent_42%),#06131d] p-4 shadow-2xl shadow-cyan-950/12 sm:p-5">
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-100/34 to-transparent" />
+                    <img
+                      src={founder.image}
+                      alt={founder.name}
+                      className={`max-h-full max-w-full object-contain drop-shadow-2xl ${founder.imageClassName}`}
+                    />
+                  </figure>
+                  <div className="pt-6">
+                    <h2 className="text-3xl font-semibold leading-tight text-white">{founder.name}</h2>
+                    <p className="mt-3 text-sm font-semibold tracking-[0.08em] text-cyan-100/70">{founder.title}</p>
+                    <div className="mt-5 max-w-xl space-y-4 text-base leading-7 text-slate-300">
+                      {founder.bio.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="relative overflow-hidden px-5 py-16 sm:px-6 lg:py-24">
+          <div className="absolute left-1/2 top-24 h-80 w-80 -translate-x-1/2 rounded-full bg-cyan-200/10 blur-3xl" />
+          <div className="relative mx-auto grid max-w-[1120px] gap-10 lg:grid-cols-[0.62fr_0.38fr]">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-100/70">WHY ORBITAL</p>
+              <h2 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-6xl">
+                Running a pool looks simple from the outside. Behind the scenes, it is constant coordination.
+              </h2>
+              <div className="mt-8 max-w-2xl space-y-5 text-lg leading-8 text-slate-300">
+                <p>
+                  Managers, boards, staff, maintenance, members, events, payments, communication, and daily operations all need to stay in motion.
+                </p>
+                <p>
+                  Too often, that work is spread across informal processes and tools that were never designed to work together.
+                </p>
+                <p className="font-semibold text-white">
+                  Orbital came from seeing that problem firsthand and asking why the whole operation could not simply work together.
                 </p>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* SECTION 2 - TESTIMONIAL SLIDER */}
-      <section className="relative py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-gradient-to-r from-white to-[#9D4DFF] bg-clip-text text-transparent">
-              Hear from Our Community
-            </h2>
-            <p className="text-lg text-white/70 text-center mb-16">
-              Studios across the galaxy are already experiencing the Orbital advantage
-            </p>
-
-            <TestimonialSlider />
-          </motion.div>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-// Founder Card Component
-function FounderCard({
-  name,
-  role,
-  image,
-  bio,
-}: {
-  name: string;
-  role: string;
-  image: string;
-  bio: string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="relative group"
-    >
-      <div className="absolute -inset-2 bg-gradient-to-r from-[#9D4DFF]/30 to-[#6CFFF3]/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition duration-500" />
-      <div className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-8 h-full">
-        {/* Photo */}
-        <div className="relative mb-6">
-          <div className="absolute -inset-2 bg-gradient-to-r from-[#9D4DFF] to-[#6CFFF3] rounded-2xl blur-xl opacity-50" />
-          <ImageWithFallback
-            src={image}
-            alt={name}
-            className="relative w-full aspect-square object-cover rounded-2xl border-2 border-white/20"
-          />
-        </div>
-
-        {/* Info */}
-        <h3 className="text-2xl font-bold text-white mb-2">{name}</h3>
-        <p className="text-[#6CFFF3] font-semibold mb-4">{role}</p>
-        <p className="text-white/80 leading-relaxed">{bio}</p>
-
-        {/* Orbital Logo Watermark */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute top-8 right-8 w-16 h-16 rounded-full border-2 border-dashed border-[#9D4DFF]/20"
-        />
-      </div>
-    </motion.div>
-  );
-}
-
-// Testimonial Slider Component
-function TestimonialSlider() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Owner, Momentum Fitness",
-      location: "Austin, TX",
-      rating: 5,
-      text: "Orbital Fitness completely transformed how we run our studio. We went from juggling five different platforms to managing everything in one place. The time savings alone have been incredible, but the real game-changer is the 1% transaction fee. It's like getting free money back every month!",
-    },
-    {
-      name: "Marcus Williams",
-      role: "Director, Iron Temple CrossFit",
-      location: "Denver, CO",
-      rating: 5,
-      text: "The workout builder and progress tracking features are phenomenal. Our trainers love how easy it is to create custom programs, and our members are more engaged than ever. The interface is beautiful and intuitive—exactly what we needed.",
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Founder, Zen Flow Yoga",
-      location: "Portland, OR",
-      rating: 5,
-      text: "As a small studio owner wearing multiple hats, Orbital Fitness has been a lifesaver. The automated scheduling and client communications mean I can focus on teaching instead of admin work. Plus, the support team is incredible—always there when I need them.",
-    },
-    {
-      name: "David Park",
-      role: "Co-Owner, Peak Performance Lab",
-      location: "San Diego, CA",
-      rating: 5,
-      text: "We were early adopters and locked in the 1% founder rate. Best business decision we've made. The platform pays for itself with the savings on transaction fees alone, and the features keep getting better. It's like having a full operations team in your pocket.",
-    },
-    {
-      name: "Jessica Taylor",
-      role: "Manager, Revolution Strength Studio",
-      location: "Chicago, IL",
-      rating: 5,
-      text: "The front desk and merchandise features streamlined our entire check-in process. We sell more retail products now because it's so easy to process transactions. The real-time analytics help us make data-driven decisions every single day.",
-    },
-    {
-      name: "Michael Santos",
-      role: "Owner, Elevate Athletics",
-      location: "Miami, FL",
-      rating: 5,
-      text: "Orbital Fitness isn't just software—it's a growth partner. The unified platform helped us scale from one location to three without the operational chaos. The founders really understand the fitness industry, and it shows in every detail.",
-    },
-  ];
-
-  const nextTestimonial = () =>
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  const prevTestimonial = () =>
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-
-  return (
-    <div className="relative">
-      <div className="absolute -inset-4 bg-gradient-to-r from-[#9D4DFF]/20 to-[#6CFFF3]/20 rounded-3xl blur-3xl" />
-      <div className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-12">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.5 }}
-        >
-          {/* Stars */}
-          <div className="flex justify-center gap-2 mb-6">
-            {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-              <Star key={i} className="w-6 h-6 fill-[#6CFFF3] text-[#6CFFF3]" />
-            ))}
-          </div>
-
-          {/* Quote */}
-          <Quote className="w-10 h-10 text-[#9D4DFF] mb-4 mx-auto" />
-          <p className="text-xl text-white/90 text-center mb-8 italic leading-relaxed max-w-3xl mx-auto">
-            "{testimonials[currentIndex].text}"
-          </p>
-
-          {/* Author */}
-          <div className="text-center">
-            <p className="text-lg font-semibold text-white">
-              {testimonials[currentIndex].name}
-            </p>
-            <p className="text-[#6CFFF3]">{testimonials[currentIndex].role}</p>
-            <p className="text-white/60 text-sm">{testimonials[currentIndex].location}</p>
-          </div>
-        </motion.div>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-center gap-8 mt-12">
-          <button
-            onClick={prevTestimonial}
-            className="group relative"
-          >
-            <div className="absolute inset-0 bg-[#9D4DFF]/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition" />
-            <div className="relative w-12 h-12 rounded-full backdrop-blur-xl bg-white/10 border border-white/20 flex items-center justify-center hover:border-[#6CFFF3] transition">
-              <ChevronLeft className="w-6 h-6 text-white" />
+            <div className="border-y border-white/10 py-6 lg:self-end">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-100/70">Built from both</p>
+              <div className="mt-6 space-y-6">
+                <div>
+                  <p className="text-2xl font-semibold text-white">Real operating experience</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">The messy, practical side of running pools day to day.</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-semibold text-white">Customer understanding</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">The adoption, clarity, and value buyers need before trusting a new system.</p>
+                </div>
+              </div>
             </div>
-          </button>
-
-          {/* Indicators */}
-          <div className="flex gap-2">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`h-2 rounded-full transition-all ${
-                  index === currentIndex ? "w-8 bg-[#6CFFF3]" : "w-2 bg-white/30"
-                }`}
-              />
-            ))}
           </div>
+        </section>
 
-          <button
-            onClick={nextTestimonial}
-            className="group relative"
-          >
-            <div className="absolute inset-0 bg-[#9D4DFF]/30 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition" />
-            <div className="relative w-12 h-12 rounded-full backdrop-blur-xl bg-white/10 border border-white/20 flex items-center justify-center hover:border-[#6CFFF3] transition">
-              <ChevronRight className="w-6 h-6 text-white" />
+        <section className="px-5 py-14 sm:px-6 lg:py-20">
+          <div className="mx-auto max-w-[1120px]">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-100/70">HOW WE BUILD</p>
+            <div className="mt-8 divide-y divide-white/10 border-y border-white/10">
+              {principles.map(([title, copy]) => (
+                <section key={title} className="grid gap-4 py-8 lg:grid-cols-[0.38fr_0.62fr] lg:gap-12">
+                  <h2 className="text-3xl font-semibold leading-tight text-white">{title}</h2>
+                  <p className="text-base leading-7 text-slate-300">{copy}</p>
+                </section>
+              ))}
             </div>
-          </button>
-        </div>
+          </div>
+        </section>
+
+        <section className="relative overflow-hidden px-5 py-20 sm:px-6 lg:py-24">
+          <div className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-200/14 blur-3xl" />
+          <div className="relative mx-auto max-w-3xl text-center">
+            <h2 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">Help us build a better way to run pools.</h2>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">
+              If you manage pools or serve on a pool board, we’d love to show you what we’re building and hear what would make your operation easier.
+            </p>
+            <div className="mt-8">
+              <PrimaryCta>Book a Demo</PrimaryCta>
+            </div>
+          </div>
+        </section>
       </div>
-    </div>
+    </MotionConfig>
   );
 }
